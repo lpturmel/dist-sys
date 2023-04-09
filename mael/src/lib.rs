@@ -16,8 +16,6 @@ pub struct Message<Payload> {
 pub struct Body<Payload> {
     pub msg_id: Option<usize>,
     pub in_reply_to: Option<usize>,
-    // #[serde(rename = "type")]
-    // pub msg_type: String,
     #[serde(flatten)]
     pub payload: Payload,
 }
@@ -123,27 +121,6 @@ impl<T: Debug + Serialize + DeserializeOwned + Send + 'static + Clone> RpcNode<T
                         .context("serialize response to init")?;
                     stdout.write_all(b"\n").context("write trailing newline")?;
                 }
-
-                //     let handlers = &self.handlers;
-                //     for (msg_type, handler) in handlers.iter() {
-                //         if msg_type != req_msg_type {
-                //             continue;
-                //         }
-                //         let msg = Message {
-                //             src: input.dest.clone(),
-                //             dest: input.src.clone(),
-                //             body: Body {
-                //                 msg_id: body.msg_id,
-                //                 in_reply_to: body.msg_id,
-                //                 payload: body.payload.inner.clone(),
-                //             },
-                //         };
-                //         let resp = handler(&msg);
-                //         serde_json::to_writer(&mut stdout, &resp)
-                //             .context("serialize response to init")?;
-                //         stdout.write_all(b"\n").context("write trailing newline")?;
-                //     }
-                // }
                 Event::EOF => break,
             }
         }
